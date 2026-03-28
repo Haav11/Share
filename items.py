@@ -15,3 +15,7 @@ def get_item(item_id):
 def update_item(item_id, title, description, servings):
     sql = "UPDATE items SET title = ?, description = ?, servings = ? WHERE id = ?"
     db.execute(sql, [title, description, servings, item_id])
+
+def remove_item(item_id):
+    sql = "DELETE FROM items WHERE id = ?"
+    db.execute(sql, [item_id])
