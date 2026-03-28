@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi ilmoitus</title>
+</head>
+
+<body>
+  <h1>Uusi ilmoitus</h1>
+  <form action="/create_item" method="post">
+    <p>
+      Otsikko: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+      Kuvaus: <br />
+      <textarea rows="8" cols="60" name="description"></textarea>
+    </p>
+    <p>
+      Annoksia tarjolla: <br />
+      <input type="text" name="servings" size="4" />
+    </p>
+    <input type="submit" value="Luo ilmoitus" />
+  </form>
+</body>
+
+</html>
