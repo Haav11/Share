@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ilmoituksen muokkaus</title>
+</head>
+
+<body>
+  <h1>Ilmoituksen muokkaus</h1>
+  <form action="/update_item" method="post">
+    <p>
+      Otsikko: <br />
+      <input type="text" name="title" value="{{ item.title }}" />
+    </p>
+    <p>
+      Kuvaus: <br />
+      <textarea rows="8" cols="60" name="description">{{ item.description }}</textarea>
+    </p>
+    <p>
+      Annoksia tarjolla: <br />
+      <input type="text" name="servings" size="4" value="{{ item.servings }}" />
+    </p>
+    <input type="hidden" name="item_id" value="{{ item.id }}" />
+    <input type="submit" value="Päivitä ilmoitus" />
+  </form>
+</body>
+
+</html>
