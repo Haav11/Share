@@ -9,3 +9,16 @@ Ideana on, että käyttäjä pystyy tekemään ilmoituksen valmistamastaan ruoas
 - Sovelluksessa on käyttäjäsivut, jotka näyttävät käyttäjästä tilastoja ja käyttäjän lisäämät aktiiviset ruokailmoitukset.
 - Käyttäjä pystyy valitsemaan tietokohteelle yhden tai useamman luokittelun (Esim. Vegaani, maidoton, fodmap, kasvisruoka yms). 
 - Käyttäjä pystyy ilmoittautua osaksi ruoan jakoa.
+
+Ohjeet sovelluksen käynnistämiseen:
+Saat käynnistettyä sovelluksen omalla koneellasi terminaalin kautta lataamalla kloonin sovelluksesta ja siirtymällä sen kansioon.
+- git clone [url]
+- cd [kansion-nimi]
+Kansiossa sinun tulee luoda ja siirtyä virtuaaliympäristöön komennoilla
+- python3 -m venv venv 
+- source venv/bin/activate
+Lataa tarvittaessa tarvittavat kirjastot
+- pip install flask [muut-kirjastot]
+Suorita tämän jälkeen komento
+- flask run
+Avaa tämän jälkeen sovellus selaimessa.
