@@ -20,6 +20,26 @@
       Annoksia tarjolla: <br />
       <input type="text" name="servings" size="4" pattern="[1-9][0-9]{0,3}" required/>
     </p>
+    <p>
+      Ruokavalio: <br />
+      <select name="diet">
+        <option value="">(valitse)</option>
+        <option value="kasvis">kasvis</option>
+        <option value="vegaaninen">vegaaninen</option>
+        <option value="gluteeniton">gluteeniton</option>
+        <option value="laktoositon">laktoositon</option>
+      </select>
+    </p>
+    <p>
+      Laji: <br />
+      <select name="dish">
+        <option value="">(valitse)</option>
+        <option value="leivos">leivos</option>
+        <option value="keitto">keitto</option>
+        <option value="salaatti">salaatti</option>
+        <option value="pääruoka">pääruoka</option>
+      </select>
+    </p>
     <input type="submit" value="Luo ilmoitus" />
   </form>
 </body>
