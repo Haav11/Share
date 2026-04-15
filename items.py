@@ -1,5 +1,17 @@
 import db
 
+def get_all_classes():
+    sql = "SELECT title, value FROM classes ORDER BY id"
+    result = db.query(sql)
+
+    classes = {}
+    for title, value in result:
+        classes[title] = []
+    for title, value in result:
+        classes[title].append(value)
+
+    return classes
+
 def add_item(title, description, servings, user_id, classes):
     sql = "INSERT INTO items (title, description, servings, user_id) VALUES (?, ?, ?, ?)"
     db.execute(sql, [title, description, servings, user_id])
@@ -28,8 +40,11 @@ def update_item(item_id, title, description, servings):
     db.execute(sql, [title, description, servings, item_id])
 
 def remove_item(item_id):
-    sql = "DELETE FROM items WHERE id = ?"
-    db.execute(sql, [item_id])
+    sql_classes = "DELETE FROM item_classes WHERE item_id = ?"
+    db.execute(sql_classes, [item_id])
+
+    sql_item = "DELETE FROM items WHERE id = ?"
+    db.execute(sql_item, [item_id])
 
 def find_items(query):
     sql = "SELECT id, title FROM items WHERE title LIKE ? OR description LIKE ? ORDER BY id DESC"
