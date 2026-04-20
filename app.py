@@ -89,7 +89,15 @@ def edit_item(item_id):
         abort(404)
     if item["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit_item.html", item = item)
+
+    all_classes = items.get_all_classes()
+    classes = {}
+    for my_class in all_classes:
+        classes[my_class] = ""
+    for entry in items.get_classes(item_id):
+        classes[entry["title"]] = entry["value"]
+
+    return render_template("edit_item.html", item = item, all_classes = all_classes, classes = classes)
 
 @app.route("/update_item", methods=["POST"])
 def update_item():
@@ -112,7 +120,18 @@ def update_item():
     if not re.search("^[1-9][0-9]{0,3}$", servings):
         abort(403)
 
-    items.update_item(item_id, title, description, servings)
+    classes = []
+
+    selected_diets = request.form.getlist("diet[]")
+    for diet in selected_diets:
+        if diet:
+            classes.append(("Ruokavalio", diet))
+
+    dish = request.form["dish"]
+    if dish:
+        classes.append(("Laji", dish))
+
+    items.update_item(item_id, title, description, servings, classes)
 
     return redirect("/item/" + str(item_id))
 
