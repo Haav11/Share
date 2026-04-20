@@ -92,10 +92,21 @@ def edit_item(item_id):
 
     all_classes = items.get_all_classes()
     classes = {}
+
     for my_class in all_classes:
-        classes[my_class] = ""
+        if my_class == "Ruokavalio":
+            classes[my_class] = []
+        else:
+            classes[my_class] = ""
+
     for entry in items.get_classes(item_id):
-        classes[entry["title"]] = entry["value"]
+        category = entry["title"]
+        value = entry["value"]
+
+        if category == "Ruokavalio":
+            classes[category].append(value)
+        else:
+            classes[category] = value
 
     return render_template("edit_item.html", item = item, all_classes = all_classes, classes = classes)
 
@@ -120,16 +131,34 @@ def update_item():
     if not re.search("^[1-9][0-9]{0,3}$", servings):
         abort(403)
 
+    all_classes = items.get_all_classes()
+
     classes = []
 
     selected_diets = request.form.getlist("diet[]")
     for diet in selected_diets:
         if diet:
+            if "Ruokavalio" not in all_classes:
+                abort(403)
+            if diet not in all_classes["Ruokavalio"]:
+                abort(403)
+
             classes.append(("Ruokavalio", diet))
 
-    dish = request.form["dish"]
+    dish = request.form.get("dish")
     if dish:
-        classes.append(("Laji", dish))
+        parts = dish.split(":")
+
+        if len(parts) == 2:
+            category = parts[0]
+            value = parts[1]
+
+            if category not in all_classes:
+                abort(403)
+            if value not in all_classes[category]:
+                abort(403)
+
+            classes.append((category, value))
 
     items.update_item(item_id, title, description, servings, classes)
 

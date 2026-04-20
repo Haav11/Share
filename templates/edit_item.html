@@ -37,11 +37,9 @@
         <select name="dish">
           <option value="">(valitse)</option>
           {% for option in all_classes[class] %}
-            {% if classes[class] == option %}
-            <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
-            {% else %}
-            <option value="{{ class }}:{{ option }}">{{ option }}</option>
-            {% endif %}
+            <option value="Laji:{{ option }}" {% if classes[class] == option %} selected {% endif %}>
+              {{ option }}
+            </option>
           {% endfor %}
         </select>
       {% endif %}
