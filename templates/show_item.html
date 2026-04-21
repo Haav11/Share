@@ -34,6 +34,17 @@
     </ul>
   </p>
   {% endif %}
+  <h2>Ilmoittautuneet</h2>
+  <ul>
+    {% for enrollment in enrollments %}
+    <li><a href="/user/{{ enrollment.user_id }}">{{ enrollment.username }}</a></li>
+    {% endfor %}
+  </ul>
+  <h2>Ilmoittautuminen</h2>
+  <form action="/enroll" method="post">
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="submit" value="Ilmoittaudu" />
+  </form>
   <p>
     <a href="/">Takaisin</a>
   </p>
