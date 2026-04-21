@@ -41,10 +41,14 @@
     {% endfor %}
   </ul>
   <h2>Ilmoittautuminen</h2>
-  <form action="/enroll" method="post">
-    <input type="hidden" name="item_id" value="{{ item.id }}">
-    <input type="submit" value="Ilmoittaudu" />
-  </form>
+  {% if is_enrolled %}
+    <p><strong>Olet jo ilmoittautunut</strong></p>
+  {% else %}
+    <form action="/enroll" method="post">
+      <input type="hidden" name="item_id" value="{{ item.id }}">
+      <input type="submit" value="Ilmoittaudu" />
+    </form>
+  {% endif %}
   <p>
     <a href="/">Takaisin</a>
   </p>

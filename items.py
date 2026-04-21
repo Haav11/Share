@@ -23,8 +23,16 @@ def add_item(title, description, servings, user_id, classes):
         db.execute(sql, [item_id, title, value])
 
 def add_enrollment(item_id, user_id):
+    check_sql = "SELECT 1 FROM enrolled WHERE item_id = ? AND user_id = ?"
+    result = db.query(check_sql, [item_id, user_id])
+
+    if result:
+        return False
+
     sql = "INSERT INTO enrolled (item_id, user_id) VALUES (?, ?)"
     db.execute(sql, [item_id, user_id])
+
+    return True
 
 def get_enrollments(item_id):
     sql = "SELECT users.id user_id, users.username FROM enrolled, users WHERE enrolled.item_id = ? AND enrolled.user_id = users.id ORDER BY enrolled.id"

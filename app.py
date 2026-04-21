@@ -44,7 +44,15 @@ def show_item(item_id):
         abort(404)
     classes = items.get_classes(item_id)
     enrollments = items.get_enrollments(item_id)
-    return render_template("show_item.html", item = item, classes = classes, enrollments = enrollments)
+
+    is_enrolled = False
+    if "user_id" in session:
+        for enrollment in enrollments:
+            if enrollment["user_id"] == session["user_id"]:
+                is_enrolled = True
+                break
+
+    return render_template("show_item.html", item = item, classes = classes, enrollments = enrollments, is_enrolled = is_enrolled)
 
 @app.route("/new_item")
 def new_item():
