@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask
+from flask import Flask, flash
 from flask import abort, redirect, render_template, request, session
 import config
 import db
@@ -229,13 +229,18 @@ def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
+        flash("VIRHE: salasanat eivät ole samat", "error")
+        return redirect("/register")
 
     try:
         users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
+        flash("VIRHE: tunnus on jo varattu", "error")
+        return redirect("/register")
+
+    flash("Tunnus luotu", "success")
 
     return redirect("/login")
 
