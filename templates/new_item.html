@@ -1,48 +1,42 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Uusi ilmoitus</title>
-</head>
+{% block title %}Uusi ilmoitus{% endblock %}
 
-<body>
-  <h1>Uusi ilmoitus</h1>
-  <form action="/create_item" method="post">
-    <p>
-      Otsikko: <br />
-      <input type="text" name="title" maxlength="50" required/>
-    </p>
-    <p>
-      Kuvaus: <br />
-      <textarea rows="8" cols="60" name="description" maxlength="1000" required></textarea>
-    </p>
-    <p>
-      Annoksia tarjolla: <br />
-      <input type="text" name="servings" size="4" pattern="[1-9][0-9]{0,3}" required/>
-    </p>
-    {% for class in classes %}
-    <p>
-      <strong>{{ class }}:</strong><br />
-      {% if class == "Ruokavalio" %}
+{% block content %}
+<h2>Uusi ilmoitus</h2>
+<form action="/create_item" method="post">
+  <p>
+    Otsikko: <br />
+    <input type="text" name="title" maxlength="50" required/>
+  </p>
+  <p>
+    Kuvaus: <br />
+    <textarea rows="8" cols="60" name="description" maxlength="1000" required></textarea>
+  </p>
+  <p>
+    Annoksia tarjolla: <br />
+    <input type="text" name="servings" size="4" pattern="[1-9][0-9]{0,3}" required/>
+  </p>
+  {% for class in classes %}
+  <p>
+    <strong>{{ class }}:</strong><br />
+    {% if class == "Ruokavalio" %}
+      {% for option in classes[class] %}
+      <label>
+        <input type="checkbox" name="diet[]" value="{{ option }}">
+        {{ option }}
+      </label><br />
+      {% endfor %}
+    {% elif class == "Laji" %}
+      <select name="dish">
+        <option value="">(valitse)</option>
         {% for option in classes[class] %}
-        <label>
-          <input type="checkbox" name="diet[]" value="{{ option }}">
-          {{ option }}
-        </label><br />
+          <option value="{{ option }}">{{ option }}</option>
         {% endfor %}
-
-      {% elif class == "Laji" %}
-        <select name="dish">
-          <option value="">(valitse)</option>
-          {% for option in classes[class] %}
-            <option value="{{ option }}">{{ option }}</option>
-          {% endfor %}
-        </select>
-      {% endif %}
-    </p>
-    {% endfor%}
-    <input type="submit" value="Luo ilmoitus" />
-  </form>
-</body>
-
-</html>
+      </select>
+    {% endif %}
+  </p>
+  {% endfor%}
+  <input type="submit" value="Luo ilmoitus" />
+</form>
+{% endblock%}

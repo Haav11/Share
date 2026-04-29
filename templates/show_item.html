@@ -1,57 +1,47 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>{{ item.title }}</title>
-</head>
+{% block title %}{{ item.title }}{% endblock %}
 
-<body>
-  <h1>{{ item.title }}</h1>
-
-  {% if session.user_id == item.user_id %}
-  <p>
-    <a href="/edit_item/{{ item.id }}">Muokkaa</a>
-    <a href="/remove_item/{{ item.id }}">Poista</a>
-  </p>
-  {% endif %}
-
-  <p>
-    {{ item.description }}
-  </p>
-  <p>
-    Annoksia tarjolla: {{ item.servings }} kpl
-  </p>
-  <p>
-    Tarjoilija: <a href="/user/{{ item.user_id}}">{{ item.username }}</a>
-  </p>
-  {% if classes %}
-  <p>
-    Luokat:
-    <ul>
-      {% for class in classes %}
-      <li>{{ class.title }}: {{ class.value }}</li>
-      {% endfor %}
-    </ul>
-  </p>
-  {% endif %}
-  <h2>Ilmoittautuneet</h2>
+{% block content %}
+<h2>{{ item.title }}</h2>
+{% if session.user_id == item.user_id %}
+<p>
+  <a href="/edit_item/{{ item.id }}">Muokkaa</a>
+  <a href="/remove_item/{{ item.id }}">Poista</a>
+</p>
+{% endif %}
+<p>
+  {{ item.description }}
+</p>
+<p>
+  Annoksia tarjolla: {{ item.servings }} kpl
+</p>
+<p>
+  Tarjoilija: <a href="/user/{{ item.user_id}}">{{ item.username }}</a>
+</p>
+{% if classes %}
+<p>
+  Luokat:
   <ul>
-    {% for enrollment in enrollments %}
-    <li><a href="/user/{{ enrollment.user_id }}">{{ enrollment.username }}</a></li>
+    {% for class in classes %}
+    <li>{{ class.title }}: {{ class.value }}</li>
     {% endfor %}
   </ul>
-  <h2>Ilmoittautuminen</h2>
-  {% if is_enrolled %}
-    <p><strong>Olet jo ilmoittautunut</strong></p>
-  {% else %}
-    <form action="/enroll" method="post">
-      <input type="hidden" name="item_id" value="{{ item.id }}">
-      <input type="submit" value="Ilmoittaudu" />
-    </form>
-  {% endif %}
-  <p>
-    <a href="/">Takaisin</a>
-  </p>
-</body>
-
-</html>
+</p>
+{% endif %}
+<h3>Ilmoittautuneet</h3>
+<ul>
+  {% for enrollment in enrollments %}
+  <li><a href="/user/{{ enrollment.user_id }}">{{ enrollment.username }}</a></li>
+  {% endfor %}
+</ul>
+<h3>Ilmoittautuminen</h3>
+{% if is_enrolled %}
+  <p><strong>Olet jo ilmoittautunut</strong></p>
+{% else %}
+  <form action="/enroll" method="post">
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="submit" value="Ilmoittaudu" />
+  </form>
+{% endif %}
+{% endblock %}

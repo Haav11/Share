@@ -1,52 +1,46 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Ilmoituksen muokkaus</title>
-</head>
+{% block title %}Ilmoituksen muokkaus{% endblock %}
 
-<body>
-  <h1>Ilmoituksen muokkaus</h1>
-  <form action="/update_item" method="post">
-    <p>
-      Otsikko: <br />
-      <input type="text" name="title" value="{{ item.title }}" maxlength="50" required/>
-    </p>
-    <p>
-      Kuvaus: <br />
-      <textarea rows="8" cols="60" maxlength="1000" required name="description">{{ item.description }}</textarea>
-    </p>
-    <p>
-      Annoksia tarjolla: <br />
-      <input type="text" name="servings" size="4" pattern="[1-9][0-9]{0,3}" required value="{{ item.servings }}" />
-    </p>
-    <input type="hidden" name="item_id" value="{{ item.id }}" />
-    {% for class in all_classes %}
-    <p>
-      <strong>{{ class }}:</strong><br />
-      {% if class == "Ruokavalio" %}
+{% block content %}
+<h2>Ilmoituksen muokkaus</h2>
+<form action="/update_item" method="post">
+  <p>
+    Otsikko: <br />
+    <input type="text" name="title" value="{{ item.title }}" maxlength="50" required/>
+  </p>
+  <p>
+    Kuvaus: <br />
+    <textarea rows="8" cols="60" maxlength="1000" required name="description">{{ item.description }}</textarea>
+  </p>
+  <p>
+    Annoksia tarjolla: <br />
+    <input type="text" name="servings" size="4" pattern="[1-9][0-9]{0,3}" required value="{{ item.servings }}" />
+  </p>
+  <input type="hidden" name="item_id" value="{{ item.id }}" />
+  {% for class in all_classes %}
+  <p>
+    <strong>{{ class }}:</strong><br />
+    {% if class == "Ruokavalio" %}
+      {% for option in all_classes[class] %}
+      <label>
+        <input type="checkbox" name="diet[]" value="{{ option }}"
+          {% if option in classes[class] %} checked {% endif %}>
+        {{ option }}
+      </label><br />
+      {% endfor %}
+    {% elif class == "Laji" %}
+      <select name="dish">
+        <option value="">(valitse)</option>
         {% for option in all_classes[class] %}
-        <label>
-          <input type="checkbox" name="diet[]" value="{{ option }}"
-            {% if option in classes[class] %} checked {% endif %}>
-          {{ option }}
-        </label><br />
+          <option value="Laji:{{ option }}" {% if classes[class] == option %} selected {% endif %}>
+            {{ option }}
+          </option>
         {% endfor %}
-
-      {% elif class == "Laji" %}
-        <select name="dish">
-          <option value="">(valitse)</option>
-          {% for option in all_classes[class] %}
-            <option value="Laji:{{ option }}" {% if classes[class] == option %} selected {% endif %}>
-              {{ option }}
-            </option>
-          {% endfor %}
-        </select>
-      {% endif %}
-    </p>
-    {% endfor%}
-    <input type="submit" value="Päivitä ilmoitus" />
-  </form>
-</body>
-
-</html>
+      </select>
+    {% endif %}
+  </p>
+  {% endfor%}
+  <input type="submit" value="Päivitä ilmoitus" />
+</form>
+{% endblock %}
