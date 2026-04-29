@@ -42,7 +42,17 @@ def show_item(item_id):
     item = items.get_item(item_id)
     if not item:
         abort(404)
-    classes = items.get_classes(item_id)
+
+    raw_classes = items.get_classes(item_id)
+    grouped_classes = {}
+
+    for entry in raw_classes:
+        title = entry["title"]
+        value = entry["value"]
+        if title not in grouped_classes:
+            grouped_classes[title] = []
+        grouped_classes[title].append(value)
+
     enrollments = items.get_enrollments(item_id)
 
     is_enrolled = False
@@ -52,7 +62,7 @@ def show_item(item_id):
                 is_enrolled = True
                 break
 
-    return render_template("show_item.html", item = item, classes = classes, enrollments = enrollments, is_enrolled = is_enrolled)
+    return render_template("show_item.html", item = item, classes = grouped_classes, enrollments = enrollments, is_enrolled = is_enrolled)
 
 @app.route("/new_item")
 def new_item():
@@ -227,7 +237,7 @@ def create():
     except sqlite3.IntegrityError:
         return "VIRHE: tunnus on jo varattu"
 
-    return "Tunnus luotu"
+    return redirect("/login")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

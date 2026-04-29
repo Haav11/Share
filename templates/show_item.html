@@ -21,14 +21,17 @@
 </p>
 {% if classes %}
 <p>
-  Luokat:
+  Tiedot:
   <ul>
-    {% for class in classes %}
-    <li>{{ class.title }}: {{ class.value }}</li>
+    {% for title, values in classes.items() %}
+      <li>
+        <strong>{{ title }}:</strong> {{ values | join(", ")}}
+      </li>
     {% endfor %}
   </ul>
 </p>
 {% endif %}
+
 <h3>Ilmoittautuneet</h3>
 <ul>
   {% for enrollment in enrollments %}
@@ -36,7 +39,9 @@
   {% endfor %}
 </ul>
 <h3>Ilmoittautuminen</h3>
-{% if is_enrolled %}
+{% if not session.user_id %}
+  <p><a href="/login">Kirjaudu sisään</a> ilmoittautuaksesi</p>
+{% elif is_enrolled %}
   <p><strong>Olet jo ilmoittautunut</strong></p>
 {% elif item.servings <= 0 %}
   <p><em>Annokset ovat loppu</em></p>
