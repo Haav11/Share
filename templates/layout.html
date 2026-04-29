@@ -12,15 +12,15 @@
       <h1>Share</h1>
 
       <nav>
-        <a href="/">Etusivu</a> |
-        <a href="/find_item">Etsi ilmoitus</a> |
+        <a href="/" class="{{ 'active' if request.endpoint == 'index'}}">Etusivu</a> |
+        <a href="/find_item" class="{{ 'active' if request.endpoint == 'find_item'}}">Etsi ilmoitus</a> |
 
         {% if session.user_id %}
-          <a href="/new_item">Uusi ilmoitus</a> |
+          <a href="/new_item" class="{{ 'active' if request.endpoint == 'new_item'}}">Uusi ilmoitus</a> |
           <a href="/logout">Kirjaudu ulos</a>
         {% else %}
-          <a href="/login">Kirjaudu sisään</a> |
-          <a href="/register">Luo tunnus</a>
+          <a href="/login" class="{{ 'active' if request.endpoint == 'login'}}">Kirjaudu sisään</a> |
+          <a href="/register" class="{{ 'active' if request.endpoint == 'register'}}">Luo tunnus</a>
         {% endif %}
       </nav>
     </div>
