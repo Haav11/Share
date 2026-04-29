@@ -77,6 +77,9 @@ def update_item(item_id, title, description, servings, classes):
         db.execute(sql, [item_id, title, value])
 
 def remove_item(item_id):
+    sql_enrolled = "DELETE FROM enrolled WHERE item_id = ?"
+    db.execute(sql_enrolled, [item_id])
+
     sql_classes = "DELETE FROM item_classes WHERE item_id = ?"
     db.execute(sql_classes, [item_id])
 
