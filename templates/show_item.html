@@ -38,11 +38,16 @@
   <li><a href="/user/{{ enrollment.user_id }}">{{ enrollment.username }}</a></li>
   {% endfor %}
 </ul>
+
 <h3>Ilmoittautuminen</h3>
 {% if not session.user_id %}
   <p><a href="/login">Kirjaudu sisään</a> ilmoittautuaksesi</p>
 {% elif is_enrolled %}
   <p><strong>Olet jo ilmoittautunut</strong></p>
+  <form action="/cancel_enroll" method="post">
+    <input type="hidden" name="item_id" value="{{ item.id }}">
+    <input type="submit" value="Peru ilmoittautuminen">
+  </form>
 {% elif item.servings <= 0 %}
   <p><em>Annokset ovat loppu</em></p>
 {% else %}

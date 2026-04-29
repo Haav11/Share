@@ -118,6 +118,15 @@ def enroll():
 
     return redirect("/item/" + str(item_id))
 
+@app.route("/cancel_enroll", methods=["POST"])
+def cancel_enroll():
+    require_login()
+    item_id = request.form["item_id"]
+    user_id = session["user_id"]
+
+    items.remove_enrollment(item_id, user_id)
+    return redirect("/item/" + str(item_id))
+
 @app.route("/edit_item/<int:item_id>")
 def edit_item(item_id):
     require_login()

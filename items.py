@@ -45,6 +45,13 @@ def get_enrollments(item_id):
     sql = "SELECT users.id user_id, users.username FROM enrolled, users WHERE enrolled.item_id = ? AND enrolled.user_id = users.id ORDER BY enrolled.id"
     return db.query(sql, [item_id])
 
+def remove_enrollment(item_id, user_id):
+    sql_delete = "DELETE FROM enrolled WHERE item_id = ? AND user_id = ?"
+    db.execute(sql_delete, [item_id, user_id])
+
+    sql_update = "UPDATE items SET servings = servings + 1 WHERE id = ?"
+    db.execute(sql_update, [item_id])
+
 def get_classes(item_id):
     sql = "SELECT title, value FROM item_classes WHERE item_id = ?"
     return db.query(sql, [item_id])
