@@ -101,7 +101,10 @@ def enroll():
 
     user_id = session["user_id"]
 
-    items.add_enrollment(item_id, user_id)
+    success = items.add_enrollment(item_id, user_id)
+
+    if not success:
+        return "Ilmoittautuminen epäonnistui"
 
     return redirect("/item/" + str(item_id))
 

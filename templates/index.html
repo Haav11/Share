@@ -7,7 +7,10 @@
 
 <ul>
   {% for item in items %}
-  <li><a href="/item/{{ item.id }}">{{ item.title }}</a></li>
+    <li>
+      <a href="/item/{{ item.id }}">{{ item.title }}</a><br>
+      Annoksia jäljellä: {{ item.servings }}
+    </li>
   {% endfor %}
 </ul>
 {% endblock %}

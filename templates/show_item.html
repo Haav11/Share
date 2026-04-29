@@ -38,6 +38,8 @@
 <h3>Ilmoittautuminen</h3>
 {% if is_enrolled %}
   <p><strong>Olet jo ilmoittautunut</strong></p>
+{% elif item.servings <= 0 %}
+  <p><em>Annokset ovat loppu</em></p>
 {% else %}
   <form action="/enroll" method="post">
     <input type="hidden" name="item_id" value="{{ item.id }}">

@@ -29,8 +29,15 @@ def add_enrollment(item_id, user_id):
     if result:
         return False
 
-    sql = "INSERT INTO enrolled (item_id, user_id) VALUES (?, ?)"
-    db.execute(sql, [item_id, user_id])
+    item = get_item(item_id)
+    if item["servings"] <= 0:
+        return False
+
+    sql_enroll = "INSERT INTO enrolled (item_id, user_id) VALUES (?, ?)"
+    db.execute(sql_enroll, [item_id, user_id])
+
+    sql_update = "UPDATE items SET servings = servings - 1 WHERE id = ?"
+    db.execute(sql_update, [item_id])
 
     return True
 
@@ -43,7 +50,7 @@ def get_classes(item_id):
     return db.query(sql, [item_id])
 
 def get_items():
-    sql = "SELECT id, title FROM items ORDER BY id DESC"
+    sql = "SELECT id, title, servings FROM items ORDER BY id DESC"
     return db.query(sql)
 
 def get_item(item_id):
@@ -70,6 +77,6 @@ def remove_item(item_id):
     db.execute(sql_item, [item_id])
 
 def find_items(query):
-    sql = "SELECT id, title FROM items WHERE title LIKE ? OR description LIKE ? ORDER BY id DESC"
+    sql = "SELECT id, title, servings FROM items WHERE title LIKE ? OR description LIKE ? ORDER BY id DESC"
     like = "%" + query + "%"
     return db.query(sql, [like, like])
