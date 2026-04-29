@@ -3,30 +3,39 @@
 
 <head>
   <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 
 <body>
-  <h1>Share</h1>
+  <header class="header">
+    <div class="nav-container">
+      <h1>Share</h1>
 
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä {{ session.username }}
-  </p>
-  {% endif %}
+      <nav>
+        <a href="/">Etusivu</a> |
+        <a href="/find_item">Etsi ilmoitus</a> |
 
-  <p>
-    <a href="/">Etusivu</a> |
-    <a href="/find_item">Etsi ilmoitus</a> |
-  {% if session.user_id %}
-    <a href="/new_item">Uusi ilmoitus</a> |
-    <a href="/logout">Kirjaudu ulos</a>
-  {% else %}
-    <a href="/login">Kirjaudu sisään</a> |
-    <a href="/register">Luo tunnus</a>
-  {% endif %}
-  </p>
+        {% if session.user_id %}
+          <a href="/new_item">Uusi ilmoitus</a> |
+          <a href="/logout">Kirjaudu ulos</a>
+        {% else %}
+          <a href="/login">Kirjaudu sisään</a> |
+          <a href="/register">Luo tunnus</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
 
-  {% block content %}{% endblock %}
+  <div class="container">
+    {% if session.username %}
+    <p>
+      Olet kirjautunut nimellä {{ session.username }}
+    </p>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+
 </body>
 
 </html>
