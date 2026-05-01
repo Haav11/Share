@@ -51,6 +51,7 @@
 {% elif is_enrolled %}
   <p><strong>Olet jo ilmoittautunut</strong></p>
   <form action="/cancel_enroll" method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="hidden" name="item_id" value="{{ item.id }}">
     <input type="submit" value="Peru ilmoittautuminen">
   </form>
@@ -58,6 +59,7 @@
   <p><em>Annokset ovat loppu</em></p>
 {% else %}
   <form action="/enroll" method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="hidden" name="item_id" value="{{ item.id }}">
     <input type="submit" value="Ilmoittaudu" />
   </form>
