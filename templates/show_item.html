@@ -14,7 +14,7 @@
     {% endif %}
   </div>
 
-  <p class="description">{{ item.description }}</p>
+  <p class="description">{{ item.description | show_lines }}</p>
 
   <div class="stats-grid">
     <div class="stat-box">
@@ -48,6 +48,8 @@
 <h3>Ilmoittautuminen</h3>
 {% if not session.user_id %}
   <p><a href="/login">Kirjaudu sisään</a> ilmoittautuaksesi</p>
+{% elif session.user_id == item.user_id %}
+  <p><em>Et voi ilmoittautua omaan ilmoitukseesi</em></p>
 {% elif is_enrolled %}
   <p><strong>Olet jo ilmoittautunut</strong></p>
   <form action="/cancel_enroll" method="post">

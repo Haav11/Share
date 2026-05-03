@@ -7,6 +7,7 @@ import items
 import re
 import users
 import secrets
+import markupsafe
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -20,6 +21,12 @@ def check_csrf():
         abort(403)
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 @app.route("/")
 def index():
@@ -119,6 +126,9 @@ def enroll():
         abort(404)
 
     user_id = session["user_id"]
+
+    if item["user_id"] == user_id:
+        abort(403)
 
     success = items.add_enrollment(item_id, user_id)
 
@@ -251,9 +261,13 @@ def register():
 
 @app.route("/create", methods=["POST"])
 def create():
-    username = request.form["username"]
+    username = request.form["username"].strip()
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+
+    if not username:
+        flash("VIRHE: Käyttäjätunnus ei saa olla tyhjä", "error")
+        return redirect("/register")
 
     if password1 != password2:
         flash("VIRHE: salasanat eivät ole samat", "error")
